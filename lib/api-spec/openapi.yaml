@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: events
+    description: Event discovery operations
 paths:
   /healthz:
     get:
@@ -24,6 +26,46 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /events/search:
+    get:
+      operationId: searchEvents
+      tags: [events]
+      summary: Search for real tech events
+      description: Searches the web for events and returns only source-backed details.
+      parameters:
+        - name: topic
+          in: query
+          required: true
+          schema:
+            type: string
+            minLength: 2
+            maxLength: 120
+        - name: city
+          in: query
+          required: true
+          schema:
+            type: string
+            minLength: 2
+            maxLength: 80
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 8
+            default: 6
+      responses:
+        "200":
+          description: Events found on real web pages
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventSearchResponse"
+        "400":
+          description: Invalid search request
+        "502":
+          description: Event search provider unavailable
 components:
   schemas:
     HealthStatus:
@@ -33,4 +75,51 @@ components:
           type: string
       required:
         - status
+    EventSearchResponse:
+      type: object
+      properties:
+        query:
+          type: string
+        city:
+          type: string
+        events:
+          type: array
+          items:
+            $ref: "#/components/schemas/EventResult"
+      required: [query, city, events]
+    EventResult:
+      type: object
+      properties:
+        name:
+          type: string
+        date:
+          type: ["string", "null"]
+          description: Date as published by the source, or null if not stated.
+        location:
+          type: ["string", "null"]
+          description: Location as published by the source, or null if not stated.
+        registrationUrl:
+          type: ["string", "null"]
+          format: uri
+        sourceUrl:
+          type: string
+          format: uri
+        sourceTitle:
+          type: ["string", "null"]
+        summary:
+          type: ["string", "null"]
+        missingDetails:
+          type: array
+          items:
+            type: string
+            enum: [date, location, registration]
+      required:
+        - name
+        - date
+        - location
+        - registrationUrl
+        - sourceUrl
+        - sourceTitle
+        - summary
+        - missingDetails
 

@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "EventRadar AI"
+description = "A mobile-friendly event discovery app for students in India, searching real hackathons, AI events, coding competitions, and tech meetups with source-linked results."
+version = "1.0.0"
+id = "artifacts/eventradar-ai"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25155
+
+[services.development]
+run = "pnpm --filter @workspace/eventradar-ai run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/eventradar-ai", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/eventradar-ai/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25155"
+BASE_PATH = "/"

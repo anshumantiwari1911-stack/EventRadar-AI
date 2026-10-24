@@ -1,15 +1,16 @@
-# [Project name]
+# EventRadar AI
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+EventRadar AI helps students in India discover real hackathons, AI events, coding competitions, and tech meetups.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- `pnpm --filter @workspace/api-server run dev` — run the API server
+- `pnpm --filter @workspace/eventradar-ai run dev` — run the EventRadar AI web app
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- Required secret: `TINYFISH_API_KEY` — used only by the Express API for TinyFish Search and Fetch requests
 
 ## Stack
 
@@ -22,7 +23,9 @@ _Replace the heading above with the project's name, and this line with one sente
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/eventradar-ai` — React/Vite web app
+- `artifacts/api-server/src/routes/events.ts` — live TinyFish event search and page-fetch workflow
+- `lib/api-spec/openapi.yaml` — source of truth for the search API contract
 
 ## Architecture decisions
 
@@ -30,7 +33,9 @@ _Populate as you build — non-obvious choices a reader couldn't infer from the 
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Search by event topic and Indian city.
+- Display source-linked event pages with dates, locations, registration links, and explicit labels for details that sources do not provide.
+- Use TinyFish Search and Fetch from the server; event results are never seeded or fabricated.
 
 ## User preferences
 
