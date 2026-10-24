@@ -5,6 +5,8 @@ EventRadar searches the web for each query, fetches the original pages, and show
 source links. Event dates, locations, or registration links that cannot be
 confirmed from a source are marked as unavailable rather than guessed.
 
+demo: https://event-radar-ai--anshumantiwar25.replit.app/
+
 ## Run in Replit
 
 1. Add your TinyFish API key in **Tools → Secrets** as `TINYFISH_API_KEY`.
